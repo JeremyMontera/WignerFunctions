@@ -5,6 +5,10 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 max-line-length = 88
 
+[tool.isort]
+line_length = 88
+use_parentheses = true
+
 [tool.flake8]
 ignore = ['E203']
 max-line-length = 88
