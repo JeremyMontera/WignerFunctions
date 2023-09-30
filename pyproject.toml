@@ -6,8 +6,7 @@ build-backend = "setuptools.build_meta"
 max-line-length = 88
 
 [tool.isort]
-line_length = 88
-use_parentheses = true
+line-length = 88
 
 [tool.flake8]
 ignore = ['E203']
@@ -15,7 +14,5 @@ max-line-length = 88
 
 [tool.pytest.ini_options]
 testpaths = "tests"
-addopts = [
-    "--import-mode=importlib",
-]
 pythonpath = "src"
+addopts = "--import-mode=importlib"
