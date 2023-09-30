@@ -1,1 +1,1 @@
-from .PlenopticField import ScalarPF
+from .PlenopticField import ScalarPF  # noqa: F401
