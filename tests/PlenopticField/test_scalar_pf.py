@@ -5,6 +5,7 @@ import pytest
 
 from WDF.PlenopticField import ScalarPF
 
+
 @pytest.fixture
 def setup_major_PFs():
     """Setup major PFs in the $x$- and $y$-directions."""
@@ -18,6 +19,7 @@ def setup_major_PFs():
     Y = ScalarPF(y, "major", "y", 2)
     return X._pf, Y._pf
 
+
 @pytest.fixture
 def setup_minor_PFs():
     """Setup minor PFs in the $x$- and $y$-directions."""
@@ -30,6 +32,7 @@ def setup_minor_PFs():
     X = ScalarPF(x, "minor", "x", 3)
     Y = ScalarPF(y, "minor", "y", 2)
     return X._pf, Y._pf
+
 
 @pytest.fixture
 def setup_major_results():
@@ -60,11 +63,12 @@ def setup_major_results():
             [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
             [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
             [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         ]
     )
 
     return X, Y
+
 
 @pytest.fixture
 def setup_minor_results():
@@ -80,7 +84,7 @@ def setup_minor_results():
             [-1, 0, 1, -1, 0, 1, -1, 0, 1],
             [-1, 0, 1, -1, 0, 1, -1, 0, 1],
             [-1, 0, 1, -1, 0, 1, -1, 0, 1],
-            [-1, 0, 1, -1, 0, 1, -1, 0, 1]
+            [-1, 0, 1, -1, 0, 1, -1, 0, 1],
         ]
     )
 
@@ -95,11 +99,12 @@ def setup_minor_results():
             [-1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
-            [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         ]
     )
 
     return X, Y
+
 
 def test_major_PF(setup_major_PFs, setup_major_results):
     """Test the construction of major plenoptic fields."""
@@ -109,6 +114,7 @@ def test_major_PF(setup_major_PFs, setup_major_results):
 
     assert np.all(X_actual == X_result)
     assert np.all(Y_actual == Y_result)
+
 
 def test_minor_PF(setup_minor_PFs, setup_minor_results):
     """Test the construction of minor plenoptic fields."""
