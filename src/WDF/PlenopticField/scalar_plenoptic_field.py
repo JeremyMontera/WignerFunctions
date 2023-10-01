@@ -39,6 +39,8 @@ class ScalarPF:
 
         if (pf_type.lower() == "major"):
             self._construct_major(arr, num, dim)
+        elif (pf_type.lower() == "minor"):
+            self._construct_minor(arr, num, dim)
 
     def _construct_major(
             self, arr: np.ndarray, num_pixels: int, dim: int
@@ -48,14 +50,14 @@ class ScalarPF:
 
         Args:
             arr:
-                Array from which the scalar PF will be constructed from. The user
-                should not have access to this object. Size: $N_s \times 1$.
-            dim:
-                Direction that the corresponding coordinate varies in (either `'x'` for
-                the `x`-direction, or `'y'` for the `y`-direction).
+                Array from which the scalar PF will be constructed from. Size: 
+                $N_s \times 1$.
             num_pixels:
                 The number pixels in each micro-image. It is assumed that all 
                 micro-images and PFs are square.
+            dim:
+                Direction that the corresponding coordinate varies in (either `'x'` for
+                the `x`-direction, or `'y'` for the `y`-direction).
         """
 
         arr = arr.flatten()
@@ -78,5 +80,39 @@ class ScalarPF:
                     self._pf[
                         qi: qi + num_pixels, qj: qj + num_pixels
                     ] = arr[i] * np.ones((num_pixels))
+    
+    def _construct_minor(
+            self, arr: np.ndarray, num_micro: int, dim: int
+        ) -> None:
+        """
+        This private function constructs a minor PF from the provided array.
 
-        return self._pf
+        Args:
+            arr:
+                Array from which the scalar PF will be constructed from. Size: 
+                $N_s \times 1$.
+            num_micro:
+                The number pixels in each micro-image. It is assumed that all 
+                micro-images and PFs are square.
+            dim:
+                Direction that the corresponding coordinate varies in (either `'x'` for
+                the `x`-direction, or `'y'` for the `y`-direction).
+        """
+
+        arr = arr.flatten()
+        arr_x, arr_y = np.meshgrid(arr, arr)
+        num_pixels: int = arr.shape[0]
+        self._pf: np.ndarray = np.zeros(
+            (num_micro * num_pixels, num_micro * num_pixels)
+        )
+
+        for i in range(num_micro):
+            qi = num_pixels * i
+
+            for j in range(num_micro):
+                qj = num_pixels * j
+
+                if dim.lower() == "x":
+                    self._pf[qi: qi + num_pixels, qj: qj + num_pixels] = arr_x
+                elif dim.lower() == "y":
+                    self._pf[qi: qi + num_pixels, qj: qj + num_pixels] = arr_y
