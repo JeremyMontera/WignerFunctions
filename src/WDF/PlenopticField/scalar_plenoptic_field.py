@@ -5,8 +5,9 @@ quantity.
 
 from __future__ import annotations
 
-import numpy as np
 from typing import Optional, Tuple
+
+import numpy as np
 
 
 class PFError(Exception):
@@ -30,8 +31,8 @@ class ScalarPF:
         Args:
             arr:
                 Array from which the scalar PF will be constructed from. The user
-                should not have access to this object. Size: $N_s \times 1$. If the 
-                length of the array is zero, then the user is trying to build from 
+                should not have access to this object. Size: $N_s \times 1$. If the
+                length of the array is zero, then the user is trying to build from
                 another plenoptic field.
             pf_type:
                 The type of PF: major or minor. A major PF is a PF where the indices of
@@ -53,17 +54,17 @@ class ScalarPF:
                 self._construct_minor(arr, num, dim)
             else:
                 raise PFError(
-                    "***ERROR***:\tThe plenoptic field type entered is invalid\n" \
+                    "***ERROR***:\tThe plenoptic field type entered is invalid\n"
                     f"pf_type = {pf_type}"
                 )
         else:
             if not pf_type == "" or not dim == "" or not num == -1:
                 raise PFError(
-                    "***ERROR***:\tYou have passed invalid arguments for initializing" \
-                    f" an empty plenoptic field: pf_type = {pf_type}, dim = {dim}," \
+                    "***ERROR***:\tYou have passed invalid arguments for initializing"
+                    f" an empty plenoptic field: pf_type = {pf_type}, dim = {dim},"
                     f" num = {num}"
                 )
-            
+
             self._pf: np.ndarray = np.array([])
 
     def __add__(self, other: ScalarPF) -> ScalarPF:
@@ -82,7 +83,6 @@ class ScalarPF:
 
         ret: np.ndarray = self._pf + other._pf
         return ScalarPF(arr=ret)
-    
 
     def __sub__(self, other: ScalarPF) -> ScalarPF:
         """
@@ -154,7 +154,7 @@ class ScalarPF:
                     ] * np.ones((num_pixels))
                 else:
                     raise PFError(
-                        "***ERROR***:\tYou passed a dimension not recognized\n" \
+                        "***ERROR***:\tYou passed a dimension not recognized\n"
                         f"dimension = {dim.lower()}"
                     )
 
@@ -208,15 +208,15 @@ class ScalarPF:
                     self._pf[qi : qi + num_pixels, qj : qj + num_pixels] = arr_y
                 else:
                     raise PFError(
-                        "***ERROR***:\tYou passed a dimension not recognized\n" \
+                        "***ERROR***:\tYou passed a dimension not recognized\n"
                         f"dimension = {dim.lower()}"
                     )
 
     @property
     def shape(self) -> Tuple[int, int]:
         """
-        Gets the shape of the plenoptic field: (number of micro-images * number of 
-        pixels per micro-image). This is just forwarding `numpy.shape` from the 
+        Gets the shape of the plenoptic field: (number of micro-images * number of
+        pixels per micro-image). This is just forwarding `numpy.shape` from the
         underlying array.
 
         Type:

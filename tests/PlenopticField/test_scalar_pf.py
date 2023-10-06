@@ -111,7 +111,7 @@ def test_pf_empty_PF():
     """Test the construction of an empty plenoptic field."""
 
     empty = ScalarPF(arr=np.array([]))
-    assert empty._pf.shape == (0, )
+    assert empty._pf.shape == (0,)
 
 
 def test_pf_invalid_constructor():
@@ -121,7 +121,7 @@ def test_pf_invalid_constructor():
         ScalarPF(arr=np.array([]), dim="x")
 
     assert exc.value.args[0] == (
-        "***ERROR***:\tYou have passed invalid arguments for initializing" \
+        "***ERROR***:\tYou have passed invalid arguments for initializing"
         " an empty plenoptic field: pf_type = , dim = x, num = -1"
     )
 
@@ -146,22 +146,22 @@ def test_pf_minor_PF(setup_minor_PFs, setup_minor_results):
     assert np.all(Y_actual == Y_result)
 
 
-@pytest.mark.parametrize(
-        "pf_type",
-        [
-            "major", "minor"
-        ]
-)
+@pytest.mark.parametrize("pf_type", ["major", "minor"])
 def test_pf_constructor_error_bad_dim(pf_type):
     with pytest.raises(PFError) as exc:
         ScalarPF(arr=np.zeros((1, 1)), pf_type=pf_type, dim="z", num=3)
 
-    assert exc.value.args[0] == \
-        "***ERROR***:\tYou passed a dimension not recognized\ndimension = z"
-    
+    assert (
+        exc.value.args[0]
+        == "***ERROR***:\tYou passed a dimension not recognized\ndimension = z" # noqa: W503
+    )
+
+
 def test_pf_constructor_error_bad_type():
     with pytest.raises(PFError) as exc:
         ScalarPF(arr=np.zeros((1, 1)), pf_type="foo", dim="x", num=3)
 
-    assert exc.value.args[0] == \
-    "***ERROR***:\tThe plenoptic field type entered is invalid\npf_type = foo"
+    assert (
+        exc.value.args[0]
+        == "***ERROR***:\tThe plenoptic field type entered is invalid\npf_type = foo" # noqa: W503
+    )
