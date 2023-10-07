@@ -10,6 +10,9 @@ from typing import Optional, Tuple
 import numpy as np
 
 
+TOL = 1E-10
+
+
 class PFError(Exception):
     ...
 
@@ -81,8 +84,99 @@ class ScalarPF:
                 ...
         """
 
+        if self.shape[0] != other.shape[0] and self.shape[1] != other.shape[1]:
+            raise PFError(
+                "***ERROR***:\tThe shapes of the two PFs are not the same."
+            )
+        
         ret: np.ndarray = self._pf + other._pf
         return ScalarPF(arr=ret)
+    
+
+    def __eq__(self, other: ScalarPF) -> bool:
+        """
+        Overrides Python's built-in comparison operator. This will check if two PFs are
+        equal (within some tolerance).
+
+        Args:
+            other:
+                ...
+
+        Returns:
+            flag:
+                ...
+        """
+
+        if self.shape[0] != other.shape[0] and self.shape[1] != other.shape[1]:
+            raise PFError(
+                "***ERROR***:\tThe shapes of the two PFs are not the same."
+            )
+        
+        assert np.all(abs(self._pf - other._pf) < TOL)
+    
+
+    def __truediv__(self, scalar: float) -> ScalarPF:
+        """
+        Overrides Python's built-in "divide" operator. This will divide the PF by a
+        scalar value and return the scaled PF.
+
+        Args:
+            scalar:
+                ...
+
+        Return:
+            return:
+                ...
+        """
+
+        if abs(scalar) < TOL:
+            raise ValueError("***ERROR***:\tYou are trying to divide by zero!")
+        
+        ret: np.ndarray = self._pf / scalar
+        return ScalarPF(arr=ret)
+    
+
+    def __mul__(self, scalar: float) -> ScalarPF:
+        """
+        Overrides Python's built-in "multiply" operator. This will multiply the PF by a
+        scalar value and return the scaled PF.
+
+        NOTE: this is for multiplcation on the left of the form
+        $\text{scalar} \times PF$.
+
+        Args:
+            scalar:
+                ...
+
+        Returns:
+            return:
+                ...
+        """
+
+        ret: np.ndarray = scalar * self._pf
+        return ScalarPF(arr=ret)
+    
+
+    def __rmul__(self, scalar: float) -> ScalarPF:
+        """
+        Overrides Python's built-in "multiply" operator. This will multiply the PF by a
+        scalar value and return the scaled PF.
+
+        NOTE: this is for multiplcation on the right of the form
+        $PF \times \text{scalar}$.
+
+        Args:
+            scalar:
+                ...
+
+        Returns:
+            return:
+                ...
+        """
+
+        ret: np.ndarray = scalar * self._pf
+        return ScalarPF(arr=ret)
+    
 
     def __sub__(self, other: ScalarPF) -> ScalarPF:
         """
@@ -97,6 +191,11 @@ class ScalarPF:
             return:
                 ...
         """
+
+        if self.shape[0] != other.shape[0] and self.shape[1] != other.shape[1]:
+            raise PFError(
+                "***ERROR***:\tThe shapes of the two PFs are not the same."
+            )
 
         ret: np.ndarray = self._pf - other._pf
         return ScalarPF(arr=ret)
